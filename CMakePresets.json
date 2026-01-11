@@ -1,0 +1,15 @@
+{
+	"version": 3,
+	"configurePresets": [
+		{
+			"name": "conan",
+			"binaryDir": "${sourceDir}/build_conan",
+			"cacheVariables": {
+				"CMAKE_TOOLCHAIN_FILE": "${sourceDir}/build_conan/conan_toolchain.cmake",
+				"CMAKE_POLICY_DEFAULT_CMP0091": "NEW",
+				"CMAKE_BUILD_TYPE": "Release",
+				"USING_CONAN_PRESET": "ON"
+			}
+		}
+	]
+}
