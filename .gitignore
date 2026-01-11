@@ -18,7 +18,10 @@ Debug/
 Release/
 .vs/
 .claude/
-build*
+build/
+build_conan/
+build_release/
+build_debug/
 .vscode/
 addons/
 *xpam/

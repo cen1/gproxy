@@ -1,0 +1,30 @@
+name: build
+
+on: [ push, pull_request ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  windows-latest:
+    if: true
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: TheMrMilchmann/setup-msvc-dev@v3
+        with:
+          arch: x86
+
+      - name: Install Conan
+        if: ${{ matrix.deptool == 'conan' }}
+        uses: conan-io/setup-conan@v1
+        with:
+          cache_packages: true
+
+      - name: Cmake conan
+        run: |
+          conan install . -of build_conan -s compiler.cppstd=20 -s build_type=Release -s arch=x86 -o *:shared=True --build=missing
+          cmake --preset conan -A Win32
+          cmake --build build_conan --config Release
