@@ -18,7 +18,6 @@ jobs:
           arch: x86
 
       - name: Install Conan
-        if: ${{ matrix.deptool == 'conan' }}
         uses: conan-io/setup-conan@v1
         with:
           cache_packages: true

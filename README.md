@@ -1,4 +1,5 @@
 # GProxy++
+[![build](https://github.com/cen1/gproxy/actions/workflows/build.yml/badge.svg)](https://github.com/cen1/gproxy/actions/workflows/build.yml)
 
 This is a modernized GProxy++ fork used on Eurobattle.net platform.  
 It includes several improvements:
