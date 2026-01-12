@@ -19,6 +19,7 @@
 #include "config.h"
 #include "util.h"
 
+#include <algorithm>
 #include <stdlib.h>
 #include <fstream>
 #include <iostream>
@@ -46,8 +47,8 @@ void CConfig :: Read( string file )
 
 			// remove newlines and partial newlines to help fix issues with Windows formatted config files on Linux systems
 
-			Line.erase( remove( Line.begin( ), Line.end( ), '\r' ), Line.end( ) );
-			Line.erase( remove( Line.begin( ), Line.end( ), '\n' ), Line.end( ) );
+			Line.erase( std::remove( Line.begin( ), Line.end( ), '\r' ), Line.end( ) );
+			Line.erase( std::remove( Line.begin( ), Line.end( ), '\n' ), Line.end( ) );
 
 			string :: size_type Split = Line.find( "=" );
 

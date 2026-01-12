@@ -7,8 +7,8 @@
 #ifndef _WINSOCKAPI_
 #define _WINSOCKAPI_
 #endif
-#include "Windows.h"
-#include "Winuser.h"
+#include <windows.h>
+#include <winuser.h>
 #include "log.h"
 
 using namespace std;

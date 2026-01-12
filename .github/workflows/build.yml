@@ -27,3 +27,36 @@ jobs:
           conan install . -of build_conan -s compiler.cppstd=20 -s build_type=Release -s arch=x86 -o *:shared=True --build=missing
           cmake --preset conan -A Win32
           cmake --build build_conan --config Release
+
+  ubuntu-mingw-cross:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential mingw-w64 gcc-mingw-w64-i686 g++-mingw-w64-i686 python3 python3-pip
+          pip3 install conan --upgrade
+
+      - name: Configure Conan
+        run: |
+          conan remote update conancenter --url="https://center2.conan.io"
+          conan profile detect --force
+
+      - name: Install dependencies with Conan
+        run: |
+          conan install . -of build_mingw -s compiler.cppstd=20 -s build_type=Release -s arch=x86 -s os=Windows -s compiler=gcc -s compiler.version=14 -o '*:shared=True' --build=missing
+
+      - name: Configure CMake
+        run: cmake --preset linux-mingw-cross
+
+      - name: Build
+        run: cmake --build build_mingw --config Release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gproxy-mingw
+          path: build_mingw/gproxy/gproxy.exe*
