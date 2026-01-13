@@ -51,7 +51,7 @@ conan install . -of build_conan -s compiler.cppstd=20 -s build_type=Release -s a
 cmake --preset conan -G "Visual Studio 17 2022" -A Win32
 cmake --build build_conan --config Release
 ```
-## On Debian (Cross-Compilation to Windows)
+## On Debian 13 (Cross-Compilation to Windows)
 
 **Prerequisites:**
 ```bash
