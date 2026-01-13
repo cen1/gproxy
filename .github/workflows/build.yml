@@ -66,6 +66,8 @@ jobs:
           RANLIB=i686-w64-mingw32-ranlib
           LD=i686-w64-mingw32-ld
           STRIP=i686-w64-mingw32-strip
+          WINDRES=i686-w64-mingw32-windres
+          RC=i686-w64-mingw32-windres
 
           [conf]
           tools.build:compiler_executables={"c": "i686-w64-mingw32-gcc", "cpp": "i686-w64-mingw32-g++", "ld": "i686-w64-mingw32-ld"}
