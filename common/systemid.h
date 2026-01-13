@@ -5,9 +5,13 @@
 #define _WINSOCKAPI_
 #endif
 #include "log.h"
-#include <atlbase.h>
 #include <vector>
 #include <windows.h>
+#ifdef __MINGW32__
+#include "mingw_atlbase.h"
+#else
+#include <atlbase.h>
+#endif
 
 using std::string;
 

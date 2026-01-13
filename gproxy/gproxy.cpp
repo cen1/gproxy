@@ -74,6 +74,35 @@ const int pvpgnLocalPort = 6112;
 //
 int main(int argc, char** argv)
 {
+	// Command line arguments - parse early for --help
+	argagg::parser argparser{ {
+	  { "help", { "-h", "--help" }, "Show this help message", 0 },
+	  { "w3exe", { "--w3exe" }, "Full path of w3 .exe", 1 },
+	  { "mode", { "--mode" }, "Restricted or normal", 1 },
+	  { "pvpgn_server", { "--pvpgn-server" }, "PvPGN server address", 1 },
+	  { "plink", { "--plink" }, "Full path to plink.exe", 1 },
+	  { "ft", { "--ft" }, "Use full tunnel for port forwarding.", 1 },
+	} };
+
+	argagg::parser_results args;
+	if (argc > 1) {
+		try {
+			args = argparser.parse(argc, argv);
+		}
+		catch (const std::exception& e) {
+			std::cerr << "Error parsing command line arguments: " << e.what() << std::endl;
+			return 1;
+		}
+
+		// Help - handle immediately before any initialization
+		if (args["help"]) {
+			std::cout << "GProxy++ v" << GPROXY_VERSION << std::endl << std::endl;
+			std::cout << "Available options:" << std::endl;
+			std::cout << argparser;
+			return 0;
+		}
+	}
+
 	// init config
 	CConfig::Read("gproxy.ini");
 
@@ -127,28 +156,8 @@ int main(int argc, char** argv)
 	bool pfFullTunnelEnabled = (CConfig::GetInt("pf_full_tunnel", 0)) == 1 ? true : false;
 	string plinkExe = "plink.exe";
 
-	// Command line arguments
-	argagg::parser argparser{ {
-	  { "help", { "-h", "--help" }, "--w3exe, --mode, --pvpgn-server, --plink, --ft", 0 },
-	  { "w3exe", { "--w3exe" }, "Full path of w3 .exe", 1 },
-	  { "mode", { "--mode" }, "Restricted or normal", 1 },
-	  { "pvpgn_server", { "--pvpgn-server" }, "PvPGN server address", 1 },
-	  { "plink", { "--plink" }, "Full path to plink.exe", 1 },
-	  { "ft", { "--ft" }, "Use full tunnel for port forwarding.", 1 },
-	} };
-
+	// Process command line arguments
 	if (argc > 1) {
-
-		argagg::parser_results args;
-		try {
-			args = argparser.parse(argc, argv);
-		}
-		catch (const std::exception& e) {
-			logger.error("Error parsing command line arguments: " + string(e.what()));
-			logger.info("GPROXY EXITING");
-			return 1;
-		}
-
 		// Mode
 		if (args["mode"]) {
 

@@ -51,9 +51,29 @@ conan install . -of build_conan -s compiler.cppstd=20 -s build_type=Release -s a
 cmake --preset conan -G "Visual Studio 17 2022" -A Win32
 cmake --build build_conan --config Release
 ```
-## On Linux
+## On Debian 13 (Cross-Compilation to Windows)
 
-TODO
+**Prerequisites:**
+```bash
+sudo apt-get install -y cmake build-essential mingw-w64 gcc-mingw-w64-i686 g++-mingw-w64-i686 python3 python3-pip
+pip3 install conan --upgrade
+conan remote update conancenter --url="https://center2.conan.io"
+```
+
+**Build:**
+```bash
+conan profile detect --force
+conan install . -of build_mingw -s compiler.cppstd=20 -s build_type=Release -s arch=x86 -s os=Windows -s compiler=gcc -s compiler.version=14 -o '*:shared=True' --build=missing
+cmake --preset linux-mingw-cross
+cmake --build build_mingw --config Release
+```
+
+Output: `build_mingw/gproxy/gproxy.exe`
+
+**Run:**
+```bash
+WINEPATH="/usr/lib/gcc/i686-w64-mingw32/14-win32;/usr/i686-w64-mingw32/lib" wine build_mingw/gproxy/gproxy.exe --help
+```
 
 # gproxy.ini
 

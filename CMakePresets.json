@@ -10,6 +10,19 @@
 				"CMAKE_BUILD_TYPE": "Release",
 				"USING_CONAN_PRESET": "ON"
 			}
+		},
+		{
+			"name": "linux-mingw-cross",
+			"displayName": "Linux to Windows Cross-Compilation (MinGW 32-bit)",
+			"description": "Cross-compile from Linux to Windows using MinGW-w64 (32-bit)",
+			"binaryDir": "${sourceDir}/build_mingw",
+			"cacheVariables": {
+				"CMAKE_TOOLCHAIN_FILE": "${sourceDir}/build_mingw/conan_toolchain.cmake",
+				"CMAKE_POLICY_DEFAULT_CMP0091": "NEW",
+				"CMAKE_BUILD_TYPE": "Release",
+				"CMAKE_CROSSCOMPILING": "ON",
+				"USING_CONAN_PRESET": "ON"
+			}
 		}
 	]
 }
