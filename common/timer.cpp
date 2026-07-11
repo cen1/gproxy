@@ -3,7 +3,7 @@
 #ifndef _WINSOCKAPI_
 #define _WINSOCKAPI_
 #endif
-#include <Windows.h>
+#include <windows.h>
 #include <ctime>
 
 Timer::Timer() {

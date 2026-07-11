@@ -27,3 +27,65 @@ jobs:
           conan install . -of build_conan -s compiler.cppstd=20 -s build_type=Release -s arch=x86 -o *:shared=True --build=missing
           cmake --preset conan -A Win32
           cmake --build build_conan --config Release
+
+  ubuntu-mingw-cross:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential mingw-w64 gcc-mingw-w64-i686 g++-mingw-w64-i686 python3 python3-pip
+          pip3 install conan --upgrade
+
+      - name: Configure Conan
+        run: |
+          conan remote update conancenter --url="https://center2.conan.io"
+          conan profile detect --force
+
+      - name: Detect MinGW GCC version and create profile
+        run: |
+          GCC_VERSION=$(i686-w64-mingw32-gcc -dumpversion | grep -oE '^[0-9]+')
+          echo "MinGW GCC version: $GCC_VERSION"
+          cat > ~/.conan2/profiles/mingw32 << EOF
+          [settings]
+          os=Windows
+          arch=x86
+          compiler=gcc
+          compiler.version=$GCC_VERSION
+          compiler.cppstd=20
+          compiler.libcxx=libstdc++11
+          build_type=Release
+
+          [buildenv]
+          CC=i686-w64-mingw32-gcc
+          CXX=i686-w64-mingw32-g++
+          AR=i686-w64-mingw32-ar
+          RANLIB=i686-w64-mingw32-ranlib
+          LD=i686-w64-mingw32-ld
+          STRIP=i686-w64-mingw32-strip
+          WINDRES=i686-w64-mingw32-windres
+          RC=i686-w64-mingw32-windres
+
+          [conf]
+          tools.build:compiler_executables={"c": "i686-w64-mingw32-gcc", "cpp": "i686-w64-mingw32-g++", "ld": "i686-w64-mingw32-ld"}
+          tools.cmake.cmaketoolchain:generator=Unix Makefiles
+          EOF
+
+      - name: Install dependencies with Conan
+        run: |
+          conan install . -of build_mingw -pr:b=default -pr:h=mingw32 -o '*:shared=True' --build=missing
+
+      - name: Configure CMake
+        run: cmake --preset linux-mingw-cross
+
+      - name: Build
+        run: cmake --build build_mingw --config Release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gproxy-mingw
+          path: build_mingw/gproxy/gproxy.exe*

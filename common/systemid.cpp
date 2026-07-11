@@ -3,9 +3,9 @@
 #include "util.h"
 #include "timer.h"
 #include <psapi.h>
-#include "Windows.h"
-#include "Shlobj.h"
-#include <TlHelp32.h>
+#include <windows.h>
+#include <shlobj.h>
+#include <tlhelp32.h>
 #include <algorithm>
 #include <sstream>
 #pragma comment(lib, "psapi.lib")

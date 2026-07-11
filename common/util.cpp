@@ -22,14 +22,18 @@
 #ifndef _WINSOCKAPI_
 #define _WINSOCKAPI_
 #endif
-#include <Windows.h>
+#include <windows.h>
 #include <ctime>
 #include <sstream>
 #include <fstream>
 #include <iomanip>
 
 #include <sys/stat.h>
+#ifdef __MINGW32__
+#include "mingw_atlbase.h"
+#else
 #include <atlbase.h>
+#endif
 
 BYTEARRAY UTIL_CreateByteArray( unsigned char *a, int size )
 {

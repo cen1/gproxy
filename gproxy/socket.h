@@ -21,6 +21,7 @@
 
 #include "bytearray.h"
 #include <string>
+#include <cstdint>
 
 using namespace std;
 

@@ -29,8 +29,13 @@ set_target_properties(gproxy_common PROPERTIES OUTPUT_NAME gproxy_common)
 target_compile_features(gproxy_common PRIVATE cxx_nullptr)
 
 if (WIN32)
-    target_compile_options(gproxy_common PRIVATE -DWIN32 -DNDEBUG -D_CONSOLE -D_CRT_SECURE_NO_WARNINGS -D_HAS_STD_BYTE=0 /wd4251 /wd4244 /wd4267)
-    target_link_libraries(gproxy_common PUBLIC winmm Version)
+    if (MSVC)
+        target_compile_options(gproxy_common PRIVATE -DWIN32 -DNDEBUG -D_CONSOLE -D_CRT_SECURE_NO_WARNINGS -D_HAS_STD_BYTE=0 /wd4251 /wd4244 /wd4267)
+    else()
+        # MinGW: Force include prefix header to disable std::byte before any other headers
+        target_compile_options(gproxy_common PRIVATE -include ${CMAKE_CURRENT_SOURCE_DIR}/mingw_prefix.h -DWIN32 -DNDEBUG -D_CONSOLE -D_CRT_SECURE_NO_WARNINGS)
+    endif()
+    target_link_libraries(gproxy_common PUBLIC winmm version)
 endif()
 
 target_include_directories(gproxy_common PUBLIC
