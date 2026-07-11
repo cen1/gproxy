@@ -41,7 +41,7 @@ This will add an additional realm to your game which you can then choose with th
 
 ## On Windows
 
-Use Visual Studio CMD (x86 Native Tools COmmand Prompt).
+Use Visual Studio CMD (x86 Native Tools Command Prompt).
 
 **Important:** GProxy++ must be built as 32-bit (x86) to properly interact with the 32-bit Warcraft III process.
 

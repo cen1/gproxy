@@ -380,6 +380,7 @@ int main(int argc, char** argv)
 	gpa::AMH antihack;
 	antihack.argW3Path = gGProxy.m_w3Dir;
 	antihack.argW3Exe = w3Exe;
+	antihack.argW3Version = gGProxy.m_w3Version;
 	boost::thread amh_thread(&gpa::AMH::start, &antihack);
 #endif
 
